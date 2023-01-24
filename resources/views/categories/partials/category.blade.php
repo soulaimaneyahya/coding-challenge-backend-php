@@ -7,6 +7,7 @@
             <span class="text-muted">Doesn't have Parent Category</span>
         @endif
     </td>
+    <td>{{ $category->products_count }}</td>
     <td>{{ $category->created_at->diffForHumans() }}</td>
     <td align="right">
         <a href="{{ route('categories.show', $category) }}" class="btn btn-sm btn-dark" title="view">

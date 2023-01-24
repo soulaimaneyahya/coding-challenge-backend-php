@@ -25,6 +25,7 @@ class CategoryRepository implements RepositoryInterface, ParentCategoriesInterfa
         $categories = $this->category
         ->latest()
         ->with('parent')
+        ->withCount('products')
         ->paginate(10);
         // dd($categories);
         return $categories;

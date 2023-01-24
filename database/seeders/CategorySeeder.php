@@ -16,5 +16,10 @@ class CategorySeeder extends Seeder
     {
         $count = max((int)$this->command->ask("How many categories would you like ?", 20), 1);
         $categories = Category::factory($count)->create();
+
+        $categories->each(function (Category $category) {
+            $category->parent_category_id = fake()->randomElement([Category::get()->random()->id, null]);
+            $category->save();
+        });
     }
 }

@@ -11,6 +11,7 @@
                 <tr class="fw-bold">
                     <th scope="col">{{ __('Name') }}</th>
                     <th scope="col">{{ __('Parent Category') }}</th>
+                    <th scope="col">{{ __('Products Count') }}</th>
                     <th scope="col">{{ __('Created') }}</th>
                     <th scope="col"></th>
                 </tr>
@@ -20,7 +21,7 @@
                 @include('categories.partials.category')
                 @empty
                 <tr>
-                    <td class="text-center" colspan="4">No Category Found</td>
+                    <td class="text-center" colspan="5">No Category Found</td>
                 </tr>
                 @endforelse
                 </tbody>

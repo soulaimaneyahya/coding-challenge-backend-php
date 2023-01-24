@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             ProductSeeder::class,
             CategorySeeder::class,
+            CategoryProductSeeder::class
         ]);
 
         $this->command->info("---------------------------------- thanks seeder");

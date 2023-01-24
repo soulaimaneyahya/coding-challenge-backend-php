@@ -78,7 +78,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product): View
     {
-        $categories = $this->categories;
+        $categories = $this->categoryService->allCategories();
         return view('products.edit', compact('product', 'categories'));
     }
 
