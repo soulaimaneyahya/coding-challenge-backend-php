@@ -14,12 +14,20 @@ class Image extends Model
 
     protected $fillable = ['path'];
 
+    /**
+     * imageable morphTo relationship
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     */
     public function imageable()
     {
         return $this->morphTo();
     }
 
-    public function url()
+    /**
+     * Get Product Url
+     * @return string
+     */
+    public function url(): string
     {
         return Storage::url($this->path);
     }

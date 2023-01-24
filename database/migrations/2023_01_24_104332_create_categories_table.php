@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->uuid('id')->index()->primary();
             $table->string('name', 255)->index();
-            $table->string('description', 600);
             $table->foreignUuid('parent_category_id')->nullable()->constrained()->on('categories');
             $table->timestamps();
             $table->softDeletes();
