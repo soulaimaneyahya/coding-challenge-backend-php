@@ -3,12 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Contracts\View\View;
-use App\Http\Requests\StoreCategoryRequest;
-use App\Http\Requests\UpdateCategoryRequest;
+use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
+use App\Services\CategoryService;
 
 class CategoryController extends Controller
 {
+    public function __construct (
+        private CategoryService $categoryService
+    ) {
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +21,9 @@ class CategoryController extends Controller
      */
     public function index(): View
     {
-        return view('categories.index');
+        $categories = $this->categoryService->all();
+        dd($categories);
+        return view('categories.index', compact('categories'));
     }
 
     /**
@@ -32,10 +39,10 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreCategoryRequest  $request
+     * @param  \App\Http\Requests\CategoryRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreCategoryRequest $request)
+    public function store(CategoryRequest $request)
     {
         //
     }
@@ -65,11 +72,11 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateCategoryRequest  $request
+     * @param  \App\Http\Requests\CategoryRequest  $request
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCategoryRequest $request, Category $category)
+    public function update(CategoryRequest $request, Category $category)
     {
         //
     }

@@ -13,11 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('categories', function (Blueprint $table) {
-            $table->uuid('id')->index()->primary();
-            $table->string('name', 255)->index();
-            $table->timestamps();
-            $table->softDeletes();
+        Schema::table('categories', function (Blueprint $table) {
+            $table->foreignUuid('parent_category_id')->nullable()->constrained()->on('categories');
         });
     }
 
@@ -28,6 +25,9 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categories');
+        Schema::table('categories', function (Blueprint $table) {
+            $table->dropForeign(['parent_category_id']);
+            $table->dropColumn('parent_category_id');
+        });
     }
 };

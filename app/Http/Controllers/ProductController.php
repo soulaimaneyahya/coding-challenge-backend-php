@@ -2,13 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
+use App\Services\ProductService;
 use Illuminate\Contracts\View\View;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
-use App\Models\Product;
 
 class ProductController extends Controller
 {
+    public function __construct (
+        private ProductService $productService
+    ) {
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +22,10 @@ class ProductController extends Controller
      */
     public function index(): View
     {
-        return view('products.index');
+        $products = $this->productService->all();
+        dd($products);
+
+        return view('products.index', compact('products'));
     }
 
     /**
