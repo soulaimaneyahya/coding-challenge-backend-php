@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Scopes\FiltersScope;
+use App\Scopes\LatestScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -47,5 +48,6 @@ class Product extends Model
         parent::boot();
         // register global scopes
         static::addGlobalScope(new FiltersScope);
+        static::addGlobalScope(new LatestScope);
     }
 }

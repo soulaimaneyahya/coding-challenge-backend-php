@@ -44,8 +44,8 @@ class ProductService
             );
         }
 
-        if (isset($data['category_id'])) {
-            $product->categories()->attach($data['category_id']);
+        if (isset($data['categories'])) {
+            $product->categories()->attach($data['categories']);
         }
 
         return $product;
@@ -66,9 +66,9 @@ class ProductService
             }
         }
 
-        if (isset($data['category_id'])) {
+        if (isset($data['categories'])) {
             $product->categories()->sync([]);
-            $product->categories()->attach($data['category_id']);
+            $product->categories()->attach($data['categories']);
         } else {
             $product->categories()->sync([]);
         }

@@ -30,15 +30,15 @@
 
 <div class="mb-3">
     <label for="category_id">{{ __('Choose Category') }}</label>
-    <select class="form-control @error('category_id') is-invalid @enderror" name="category_id" id="category_id">
-        <option value {{ old('category_id', null) === null ? 'selected' : '' }}>Havn't Category</option>
-        @foreach ($categories as $category)
-          <option 
-          {{ old('category_id') == $category->id ? "selected" : "" }}
-          {{ isset($product) && $product->categories->contains($category->id) ? "selected" : "" }}
-          value="{{ $category->id }}">{{ $category->name }}</option>
-        @endforeach
-    </select>
+    @foreach($categories as $category)
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="category-{{ $category->id }}" value="{{ $category->id }}" name="categories[]" 
+            @checked(in_array($category->id, old('categories', [])) || (isset($product) && $product->categories->contains($category->id)))>
+            <label class="form-check-label" for="category-{{ $category->id }}">
+                {{ $category->name }}
+            </label>
+        </div>
+    @endforeach
     @error('category_id')
         <span class="invalid-feedback" role="alert">
             <strong>{{ $message }}</strong>

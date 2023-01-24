@@ -28,7 +28,7 @@ class ProductRequest extends FormRequest
             'description' => ['required', 'min:5', 'max:700'],
             'price' => ['required', 'numeric', 'min:1'],
             'image' => $this->product ? ['image', 'mimes:jpg,jpeg,png,gif,svg', 'max:2048'] : ['required', 'image', 'mimes:jpg,jpeg,png,gif,svg', 'max:2048'],
-            'category_id' => ['nullable', 'exists:categories,id'],
+            'categories' => ['nullable', 'array', 'exists:categories,id'],
         ];
     }
 }
