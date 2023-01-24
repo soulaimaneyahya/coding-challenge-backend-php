@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreProductRequest extends FormRequest
+class ProductRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,8 +27,8 @@ class StoreProductRequest extends FormRequest
             'name' => ['bail', 'required', 'min:5', 'max:255'],
             'description' => ['required', 'min:5', 'max:700'],
             'price' => ['required', 'numeric', 'min:1'],
-            'image' => ['required', 'image', 'mimes:jpg,jpeg,png,gif,svg', 'max:2048'],
-            'category' => [],
+            'image' => $this->product ? ['image', 'mimes:jpg,jpeg,png,gif,svg', 'max:2048'] : ['required', 'image', 'mimes:jpg,jpeg,png,gif,svg', 'max:2048'],
+            'category_id' => ['nullable', 'exists:categories,id'],
         ];
     }
 }

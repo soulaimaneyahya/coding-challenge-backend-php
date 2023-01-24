@@ -14,7 +14,7 @@ class ProductSeeder extends Seeder
      */
     public function run()
     {
-        $count = max((int)$this->command->ask("How many products would you like ?", 20), 1);
+        $count = max((int)$this->command->ask("How many products would you like ?", 30), 1);
         $products = Product::factory($count)->create();
     }
 }

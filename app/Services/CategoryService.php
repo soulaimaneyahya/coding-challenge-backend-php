@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Category;
 use App\Repositories\CategoryRepository;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class CategoryService
 {
@@ -17,7 +18,7 @@ class CategoryService
     /**
      * Get All Categories
      *
-     * @return Collection
+     * @return LengthAwarePaginator
      */
     public function all()
     {

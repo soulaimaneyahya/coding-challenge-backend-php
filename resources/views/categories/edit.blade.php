@@ -6,7 +6,7 @@
             @csrf
             @method('PUT')
             @include('categories.partials.form')
-            <button class="btn btn-sm btn-dark">Create</button>
+            <button class="btn btn-sm btn-dark">Update</button>
         </form>
     </main>
 @endsection

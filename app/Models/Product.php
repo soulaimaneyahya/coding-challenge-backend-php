@@ -23,7 +23,7 @@ class Product extends Model
      * each prouct has one image using morphOne relationship
      * @return MorphOne
      */
-    public function images(): MorphOne
+    public function image(): MorphOne
     {
         return $this->morphOne(Image::class, 'imageable');
     }

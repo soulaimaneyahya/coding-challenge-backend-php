@@ -2,17 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use App\Models\Product;
+use App\Models\Category;
 use App\Services\ProductService;
 use Illuminate\Contracts\View\View;
-use App\Http\Requests\StoreProductRequest;
-use App\Http\Requests\UpdateProductRequest;
+use App\Http\Requests\ProductRequest;
 
 class ProductController extends Controller
 {
+    public $categories;
+
     public function __construct (
         private ProductService $productService
     ) {
+        $this->categories = Category::select(['id', 'name'])->get();
     }
 
     /**
@@ -34,18 +38,25 @@ class ProductController extends Controller
      */
     public function create(): View
     {
-        return view('products.create');
+        $categories = $this->categories;
+        return view('products.create', compact('categories'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreProductRequest  $request
+     * @param  \App\Http\Requests\ProductRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreProductRequest $request)
+    public function store(ProductRequest $request)
     {
-        //
+        try {
+            $product = $this->productService->store($request->validated());
+            return redirect()->route('products.edit', compact('product'))->with('alert-success', 'Product Created !');
+        } catch (Exception $ex) {
+            // dd($ex->getMessage());
+            return redirect()->route('products.index')->with('alert-danger', 'Something going wrong!');
+        }
     }
 
     /**
@@ -56,7 +67,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        //
+        return view('products.show', compact('product'));
     }
 
     /**
@@ -67,19 +78,26 @@ class ProductController extends Controller
      */
     public function edit(Product $product): View
     {
-        return view('products.edit', compact('product'));
+        $categories = $this->categories;
+        return view('products.edit', compact('product', 'categories'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateProductRequest  $request
+     * @param  \App\Http\Requests\ProductRequest  $request
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateProductRequest $request, Product $product)
+    public function update(ProductRequest $request, Product $product)
     {
-        //
+        try {
+            $product = $this->productService->update($request->validated(), $product);
+            return redirect()->route('products.edit', compact('product'))->with('alert-info', 'Product Updated !');
+        } catch (Exception $ex) {
+            // dd($ex->getMessage());
+            return redirect()->route('products.index')->with('alert-danger', 'Something going wrong!');
+        }
     }
 
     /**
@@ -90,6 +108,12 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        try {
+            $this->productService->delete($product);
+            return redirect()->route('products.index')->with('alert-info', 'Product Deleted !');
+        } catch (Exception $ex) {
+            // dd($ex->getMessage());
+            return redirect()->route('products.index')->with('alert-danger', 'Something going wrong!');
+        }
     }
 }

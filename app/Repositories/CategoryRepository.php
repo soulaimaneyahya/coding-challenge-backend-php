@@ -2,9 +2,10 @@
 
 namespace App\Repositories;
 
-use App\Interfaces\RepositoryInterface;
 use App\Models\Category;
+use App\Interfaces\RepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class CategoryRepository implements RepositoryInterface
 {
@@ -16,14 +17,16 @@ class CategoryRepository implements RepositoryInterface
     /**
      * Get All Categories
      *
-     * @return Collection
+     * @return LengthAwarePaginator
      */
-    public function all(): Collection
+    public function all(): LengthAwarePaginator
     {
-        return $this->category
+        $categories = $this->category
         ->latest()
         ->with('parent')
-        ->get();
+        ->paginate(10);
+        // dd($categories);
+        return $categories;
     }
 
     /**

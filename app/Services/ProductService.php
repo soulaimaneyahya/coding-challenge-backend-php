@@ -2,23 +2,89 @@
 
 namespace App\Services;
 
+use App\Models\Image;
+use App\Models\Product;
 use App\Repositories\ProductRepository;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ProductService
 {
     public function __construct(
         private ProductRepository $productRepository,
+        private Product $product,
+        private Image $image,
     ) {
     }
 
     /**
      * Get All Products
      *
-     * @return Collection
+     * @return LengthAwarePaginator
      */
     public function all()
     {
         return $this->productRepository->all();
+    }
+
+    /**
+     * Store Product
+     * @param array $data
+     * @return Product
+     */
+    public function store(array $data): Product
+    {
+        $product = $this->product->create($data);
+        
+        if(isset($data['image']) && $data['image'] instanceof \Illuminate\Http\UploadedFile) {
+            $path = $data['image']->store('products');
+            $product->image()->save(
+                $this->image->make(['path' => $path])
+            );
+        }
+
+        if (isset($data['category_id'])) {
+            $product->categories()->attach($data['category_id']);
+        }
+
+        return $product;
+    }
+
+    public function update(array $data, Product $product)
+    {
+        if (isset($data['image'])) {
+            if ($product->image) {
+                Storage::delete($product->image->path);
+                $product->image->delete();
+            }
+            if ($data['image'] instanceof \Illuminate\Http\UploadedFile) {
+                $path = $data['image']->store('products');
+                $product->image()->save(
+                    $this->image->make(['path' => $path])
+                );
+            }
+        }
+
+        if (isset($data['category_id'])) {
+            $product->categories()->sync([]);
+            $product->categories()->attach($data['category_id']);
+        } else {
+            $product->categories()->sync([]);
+        }
+
+        $product->update($data);
+
+        return $product;
+    }
+
+    /**
+     * product delete
+     * @param Product $product
+     * @return void
+     */
+    public function delete(Product $product)
+    {
+        $product->delete();
     }
 }

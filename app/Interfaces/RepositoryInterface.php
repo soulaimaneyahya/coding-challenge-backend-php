@@ -3,15 +3,16 @@
 namespace App\Interfaces;
 
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 interface RepositoryInterface
 {
     /**
      * Get All Categories
      *
-     * @return Collection
+     * @return LengthAwarePaginator
      */
-    public function all(): Collection;
+    public function all(): LengthAwarePaginator;
 
     /**
      * Get Parent Categories

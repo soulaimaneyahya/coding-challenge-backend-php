@@ -3,6 +3,7 @@
 namespace App\Repositories;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ProductRepository
 {
@@ -14,10 +15,14 @@ class ProductRepository
     /**
      * Get All Products
      *
-     * @return Collection
+     * @return LengthAwarePaginator
      */
-    public function all(): Collection
+    public function all(): LengthAwarePaginator
     {
-        return $this->product->latest()->get();
+        $products = $this->product
+        ->latest()
+        ->paginate(10);
+        // dd($products);
+        return $products;
     }
 }

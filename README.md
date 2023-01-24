@@ -8,13 +8,23 @@
 composer install
 ```
 
-1. Run the following command to generate your app key:
+1. Run the following command to create .env file and generate your app key:
+
+```
+mv .env.example .env
+```
+
 
 ```bash
 php artisan key:generate
 ```
 
-2. install npm and run
+2. Create the symbolic link:
+```bash
+php artisan storage:link
+```
+
+3. install npm and run
 
 ```npm
 npm install
