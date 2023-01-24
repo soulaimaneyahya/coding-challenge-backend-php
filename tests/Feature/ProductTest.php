@@ -53,6 +53,28 @@ class ProductTest extends TestCase
         $this->assertEquals($messages['image'][0], 'The image field is required.');
     }
 
+    public function testUpdateValid()
+    {
+        $product = $this->createDummyProduct();
+
+        $this->assertDatabaseHas('products', [
+            'id' => $product->id
+        ]);
+        $product->name = 'product-2';
+
+        $this->put("/products/{$product->id}", $product->toArray())
+            ->assertStatus(302)
+            ->assertSessionHas('alert-info');
+
+        $this->assertEquals(session('alert-info'), 'Product Updated !');
+        $this->assertDatabaseMissing('products', [
+            'name' => 'product-1',
+        ]);
+        $this->assertDatabaseHas('products', [
+            'name' => 'product-2',
+        ]);
+    }
+
     public function testDelete()
     {
         $product = $this->createDummyProduct();
@@ -64,6 +86,16 @@ class ProductTest extends TestCase
         $this->assertEquals(session('alert-info'), 'Product Deleted !');
 
         $this->assertSoftDeleted('products', [
+            'id' => $product->id
+        ]);
+    }
+
+    public function testRestore()
+    {
+        $product = $this->createDummyProduct();
+        $this->testDelete();
+        $product->restore();
+        $this->assertDatabaseHas('products', [
             'id' => $product->id
         ]);
     }
