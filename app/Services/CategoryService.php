@@ -36,6 +36,15 @@ class CategoryService
     }
 
     /**
+     * get all Categories
+     * @return Collection
+     */
+    public function allCategories(): Collection
+    {
+        return $this->categoryRepository->allCategories();
+    }
+
+    /**
      * Store Category
      * @param array $data
      * @return Category

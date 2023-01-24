@@ -55,6 +55,16 @@ Attach product to category
 - $product->categories()->attach($category1);
 - $product->categories()->detach($category1);
 
+## Validate PHP-PSR
+- ./vendor/bin/phpcs app/Http/Controllers/ProductController.php --standard=PSR2
+- ./vendor/bin/phpcs app/Http/Controllers/CategoryController.php --standard=PSR2
+- ./vendor/bin/phpcs app/Services/CategoryService.php --standard=PSR2
+- ./vendor/bin/phpcs app/Services/ProductService.php --standard=PSR2
+- ./vendor/bin/phpcs app/Repositories/ProductRepository.php --standard=PSR2
+- ./vendor/bin/phpcs app/Repositories/ProductRepository.php --standard=PSR2
+- ./vendor/bin/phpcs app/Interfaces/ParentCategoriesInterface.php --standard=PSR2
+- ./vendor/bin/phpcs app/Interfaces/RepositoryInterface.php --standard=PSR2
+
 ----- 
 Need helps? Reach me out
 

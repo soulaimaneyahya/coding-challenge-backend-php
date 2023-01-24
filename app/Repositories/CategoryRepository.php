@@ -39,4 +39,13 @@ class CategoryRepository implements RepositoryInterface, ParentCategoriesInterfa
     {
         return $this->category->whereNull('parent_category_id')->get(['id', 'name']);
     }
+
+    /**
+     * get all Categories
+     * @return Collection
+     */
+    public function allCategories(): Collection
+    {
+        return Category::select(['id', 'name'])->get();
+    }
 }

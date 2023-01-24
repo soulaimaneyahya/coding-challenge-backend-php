@@ -10,7 +10,7 @@ use Exception;
 
 class CategoryController extends Controller
 {
-    public function __construct (
+    public function __construct(
         private CategoryService $categoryService
     ) {
     }
@@ -47,7 +47,8 @@ class CategoryController extends Controller
     {
         try {
             $category = $this->categoryService->store($request->validated());
-            return redirect()->route('categories.edit', compact('category'))->with('alert-success', 'Category Created !');
+            return redirect()->route('categories.edit', compact('category'))
+            ->with('alert-success', 'Category Created !');
         } catch (Exception $ex) {
             // dd($ex->getMessage());
             return redirect()->route('categories.index')->with('alert-danger', 'Something going wrong!');

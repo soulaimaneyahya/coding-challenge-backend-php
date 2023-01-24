@@ -37,7 +37,7 @@ class ProductService
     {
         $product = $this->product->create($data);
         
-        if(isset($data['image']) && $data['image'] instanceof \Illuminate\Http\UploadedFile) {
+        if (isset($data['image']) && $data['image'] instanceof \Illuminate\Http\UploadedFile) {
             $path = $data['image']->store('products');
             $product->image()->save(
                 $this->image->make(['path' => $path])

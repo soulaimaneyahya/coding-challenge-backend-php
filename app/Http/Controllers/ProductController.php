@@ -4,19 +4,18 @@ namespace App\Http\Controllers;
 
 use Exception;
 use App\Models\Product;
-use App\Models\Category;
 use App\Services\ProductService;
 use Illuminate\Contracts\View\View;
+use App\Services\CategoryService;
 use App\Http\Requests\ProductRequest;
 
 class ProductController extends Controller
 {
-    public $categories;
-
-    public function __construct (
-        private ProductService $productService
+    public function __construct(
+        private ProductService $productService,
+        private CategoryService $categoryService,
     ) {
-        $this->categories = Category::select(['id', 'name'])->get();
+        //
     }
 
     /**
@@ -27,7 +26,7 @@ class ProductController extends Controller
     public function index(): View
     {
         $products = $this->productService->all();
-        $categories = $this->categories;
+        $categories = $this->categoryService->allCategories();
         // dd($products);
         return view('products.index', compact('products', 'categories'));
     }
@@ -39,7 +38,7 @@ class ProductController extends Controller
      */
     public function create(): View
     {
-        $categories = $this->categories;
+        $categories = $this->categoryService->allCategories();
         return view('products.create', compact('categories'));
     }
 
