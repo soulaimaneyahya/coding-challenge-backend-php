@@ -20,8 +20,11 @@ class ProductRepository
     public function all(): LengthAwarePaginator
     {
         $products = $this->product
-        ->latest()
-        ->paginate(10);
+        ->paginate(10)
+        ->appends([
+            'order' => request('order'),
+            'sort_by' => request('sort_by')
+        ]);
         // dd($products);
         return $products;
     }

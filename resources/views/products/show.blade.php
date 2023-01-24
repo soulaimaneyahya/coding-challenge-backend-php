@@ -9,6 +9,14 @@
             <p>{{ $product->description }}</p>
             <h3 class="text-muted font-bold">{{ $product->price }}</h3>
             <p class="text-muted">Added {{ $product->created_at->diffForHumans() }}</p>
+            <div class="mb-3">
+                <p class="m-0 p-0">Categories:</p>
+                @foreach ($product->categories as $category)
+                <span class="badge bg-secondary }} me-2">
+                    {{ $category->name }}
+                </span>
+                @endforeach
+            </div>
         </div>
     </div>
 @endsection
