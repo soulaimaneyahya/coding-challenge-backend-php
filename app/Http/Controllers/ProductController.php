@@ -27,8 +27,9 @@ class ProductController extends Controller
     public function index(): View
     {
         $products = $this->productService->all();
+        $categories = $this->categories;
         // dd($products);
-        return view('products.index', compact('products'));
+        return view('products.index', compact('products', 'categories'));
     }
 
     /**

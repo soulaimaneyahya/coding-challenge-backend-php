@@ -5,8 +5,18 @@
             <h3>{{ ucwords(Request::segment(1)) }}</h3>
             <a href="{{ route('products.create') }}" class="btn btn-sm btn-dark">Create</a>
         </div>
-        <div>
-            <form method="GET" class="d-flex align-items-center justify-content-start my-3">
+        <div class="d-flex align-items-center justify-content-start my-3">
+            <form method="GET">
+                <div class="form-group mx-2">
+                    <select class="form-select" id="category" name="category" onchange="this.form.submit()">
+                        <option value disabled {{ request('category') === null ? 'selected' : '' }}>Fiter by Category</option>
+                        @foreach ($categories as $category)
+                        <option value="{{ $category->id }}" @if(request('category') == $category->id) selected @endif>{{ $category->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </form>
+            <form method="GET" class="d-flex align-items-center justify-content-start">
                 <div class="form-group">
                     <select class="form-select" id="sort_by" name="sort_by">
                         <option value="name" @if(request('sort_by') == 'name') selected @endif>Product Name</option>
@@ -20,7 +30,7 @@
                     </select>
                 </div>
                 <button type="submit" class="btn btn-secondary">Filter</button>
-                @if(request('sort_by') || request('order'))
+                @if(request('sort_by') || request('order') || request('category'))
                     <div class="mx-2">
                         <a href="{{ route('products.index') }}" class="btn btn-secondary">Clear</a>
                     </div>
