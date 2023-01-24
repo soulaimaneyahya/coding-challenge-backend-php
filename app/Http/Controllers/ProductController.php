@@ -23,8 +23,7 @@ class ProductController extends Controller
     public function index(): View
     {
         $products = $this->productService->all();
-        dd($products);
-
+        // dd($products);
         return view('products.index', compact('products'));
     }
 

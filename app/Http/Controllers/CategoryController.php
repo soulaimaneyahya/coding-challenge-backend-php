@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Contracts\View\View;
 use App\Http\Requests\CategoryRequest;
-use App\Models\Category;
 use App\Services\CategoryService;
+use App\Models\Category;
+use Exception;
 
 class CategoryController extends Controller
 {
@@ -22,7 +23,6 @@ class CategoryController extends Controller
     public function index(): View
     {
         $categories = $this->categoryService->all();
-        dd($categories);
         return view('categories.index', compact('categories'));
     }
 
@@ -33,7 +33,8 @@ class CategoryController extends Controller
      */
     public function create(): View
     {
-        return view('categories.create');
+        $parent_categories = $this->categoryService->parentCategories();
+        return view('categories.create', compact('parent_categories'));
     }
 
     /**
@@ -44,7 +45,13 @@ class CategoryController extends Controller
      */
     public function store(CategoryRequest $request)
     {
-        //
+        try {
+            $category = $this->categoryService->store($request->validated());
+            return redirect()->route('categories.edit', compact('category'))->with('alert-success', 'Category Created !');
+        } catch (Exception $ex) {
+            // dd($ex->getMessage());
+            return redirect()->route('categories.index')->with('alert-danger', 'Something going wrong!');
+        }
     }
 
     /**
@@ -55,7 +62,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        //
+        return view('categories.show', compact('category'));
     }
 
     /**
@@ -66,7 +73,8 @@ class CategoryController extends Controller
      */
     public function edit(Category $category): View
     {
-        return view('categories.edit', compact('category'));
+        $parent_categories = $this->categoryService->parentCategories();
+        return view('categories.edit', compact('category', 'parent_categories'));
     }
 
     /**
@@ -78,17 +86,28 @@ class CategoryController extends Controller
      */
     public function update(CategoryRequest $request, Category $category)
     {
-        //
+        try {
+            $category = $this->categoryService->update($request->validated(), $category);
+            return redirect()->route('categories.edit', compact('category'))->with('alert-info', 'Category Updated !');
+        } catch (Exception $ex) {
+            // dd($ex->getMessage());
+            return redirect()->route('categories.index')->with('alert-danger', 'Something going wrong!');
+        }
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Category  $category
-     * @return \Illuminate\Http\Response
+     * category destroy
+     * @param Category $category
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Category $category)
     {
-        //
+        try {
+            $this->categoryService->delete($category);
+            return redirect()->route('categories.index')->with('alert-info', 'Category Deleted !');
+        } catch (Exception $ex) {
+            // dd($ex->getMessage());
+            return redirect()->route('categories.index')->with('alert-danger', 'Something going wrong!');
+        }
     }
 }

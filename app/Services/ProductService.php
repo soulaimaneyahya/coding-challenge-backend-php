@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\ProductRepository;
+use Illuminate\Database\Eloquent\Collection;
 
 class ProductService
 {
@@ -10,7 +11,12 @@ class ProductService
         private ProductRepository $productRepository,
     ) {
     }
-    
+
+    /**
+     * Get All Products
+     *
+     * @return Collection
+     */
     public function all()
     {
         return $this->productRepository->all();

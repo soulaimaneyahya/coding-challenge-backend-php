@@ -13,7 +13,7 @@ class CategoryRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,8 @@ class CategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => ['bail', 'required', 'min:5', 'max:255'],
+            'parent_category_id' => ['nullable', 'exists:categories,id'],
         ];
     }
 }

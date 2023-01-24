@@ -36,6 +36,13 @@
     </div>
     <div>
     <div class="container my-4">
+        @foreach (['danger', 'warning', 'success', 'info'] as $msg)
+            @if(Session::has('alert-' . $msg))
+            <div class="alert alert-{{ $msg }} py-2" role="alert">
+                {{ Session::get('alert-' . $msg) }}
+            </div>
+            @endif
+        @endforeach
         @yield('content')
     </div>
     </div>

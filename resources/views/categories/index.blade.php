@@ -1,7 +1,30 @@
 @extends('layouts.app')
 @section('content')
     <main>
-        <h3>{{ Request::segment(1) }}</h3>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos amet eum non, consequuntur reiciendis ab repudiandae voluptatem cumque eius a necessitatibus debitis provident tempora doloribus omnis totam enim voluptate consectetur. Dicta natus commodi labore mollitia velit voluptatum temporibus rem totam?</p>
+        <div class="d-flex align-items-center justify-content-between">
+            <h3>{{ ucwords(Request::segment(1)) }}</h3>
+            <a href="{{ route('categories.create') }}" class="btn btn-sm btn-dark">Create</a>
+        </div>
+        <div class="my-4">
+            <table class="table m-0 p-0">
+                <thead>
+                <tr class="fw-bold">
+                    <th scope="col">{{ __('Name') }}</th>
+                    <th scope="col">{{ __('Parent Category') }}</th>
+                    <th scope="col">{{ __('Created') }}</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                @forelse ($categories as $category)
+                @include('categories.partials.category')
+                @empty
+                <tr>
+                    <td class="text-center" colspan="4">No Category Found</td>
+                </tr>
+                @endforelse
+                </tbody>
+            </table>
+        </div>
     </main>
 @endsection

@@ -27,7 +27,7 @@ npm run dev
 ## Generate Data
 
 ```
-php artisan migrate:fresh --seed
+php artisan db:seed
 ```
 
 ----- 
