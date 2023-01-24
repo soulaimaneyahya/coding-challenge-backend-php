@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -21,5 +22,18 @@ class ProductFactory extends Factory
             'description' => fake()->paragraph($nbSentences = 5),
             'price' => fake()->randomFloat($nbMaxDecimals = 2, $min = 0, $max = 100),
         ];
+    }
+
+    /**
+     * Create dummy product for testing
+     * @return static
+     */
+    public function productFactory(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'name' => 'product-1',
+            'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos amet eum non.',
+            'price' => 19,
+        ]);
     }
 }

@@ -64,6 +64,7 @@ Attach product to category
 - ./vendor/bin/phpcs app/Repositories/ProductRepository.php --standard=PSR2
 - ./vendor/bin/phpcs app/Interfaces/ParentCategoriesInterface.php --standard=PSR2
 - ./vendor/bin/phpcs app/Interfaces/RepositoryInterface.php --standard=PSR2
+- ./vendor/bin/phpcs tests/Feature/ProductTest.php --standard=PSR2
 
 ----- 
 Need helps? Reach me out
