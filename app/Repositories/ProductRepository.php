@@ -1,11 +1,12 @@
 <?php
 
 namespace App\Repositories;
-use App\Models\Product;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Pagination\LengthAwarePaginator;
 
-class ProductRepository
+use App\Models\Product;
+use Illuminate\Pagination\LengthAwarePaginator;
+use App\Interfaces\RepositoryInterface;
+
+class ProductRepository implements RepositoryInterface
 {
     public function __construct(
         private Product $product,

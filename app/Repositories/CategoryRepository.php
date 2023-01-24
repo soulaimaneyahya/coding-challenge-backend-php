@@ -5,9 +5,10 @@ namespace App\Repositories;
 use App\Models\Category;
 use App\Interfaces\RepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
+use App\Interfaces\ParentCategoriesInterface;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-class CategoryRepository implements RepositoryInterface
+class CategoryRepository implements RepositoryInterface, ParentCategoriesInterface
 {
     public function __construct(
         private Category $category,
