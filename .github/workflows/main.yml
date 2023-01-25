@@ -46,7 +46,6 @@ jobs:
           ./vendor/bin/phpcs app/Http/Controllers/CategoryController.php --standard=PSR2
           ./vendor/bin/phpcs app/Services/CategoryService.php --standard=PSR2
           ./vendor/bin/phpcs app/Services/ProductService.php --standard=PSR2
-          ./vendor/bin/phpcs app/Services/CategoryCollectionService.php --standard=PSR2
           ./vendor/bin/phpcs app/Repositories/ProductRepository.php --standard=PSR2
           ./vendor/bin/phpcs app/Repositories/CategoryRepository.php --standard=PSR2
           ./vendor/bin/phpcs app/Repositories/CategoryCollectionRepository.php --standard=PSR2
