@@ -2,7 +2,7 @@
     <td>{{ $category->name }}</td>
     <td>
         @if ($category->parent_category_id)
-            <span>{{ $category->parent->name }}</span>
+            <span>{{ optional($category->parent)->name }}</span>
         @else
             <span class="text-muted">Doesn't have Parent Category</span>
         @endif

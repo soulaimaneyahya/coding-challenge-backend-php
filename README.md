@@ -41,7 +41,14 @@ php artisan db:seed
 ```
 
 ## CLI
+
+- php artisan create:category --name="" --parent_category_id=""
+- php artisan delete:category --id="" [--force]
+- php artisan create:product --name="" --desc="" --price=""
+- php artisan delete:product --id=""
+
 create & delete product using php artisan tinker:
+
 - Product::create(['name' => 'lorem ipsum', 'description' => 'lorem ipsum dolor sit ament', 'price' => 19]);
 - Product::first()->delete(); # or use ->forceDelete();
 
