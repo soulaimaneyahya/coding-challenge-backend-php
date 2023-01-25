@@ -2,11 +2,11 @@
 
 namespace App\Services;
 
+use Exception;
 use App\Models\Image;
 use App\Models\Product;
 use App\Repositories\ProductRepository;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class ProductService
@@ -26,6 +26,20 @@ class ProductService
     public function all()
     {
         return $this->productRepository->all();
+    }
+
+    /**
+     * findOne Category
+     * @param string $id
+     * @return Product
+     */
+    public function findOne(string $id): Product
+    {
+        try {
+            return $this->productRepository->findOne($id);
+        } catch (Exception $ex) {
+            throw $ex;
+        }
     }
 
     /**
@@ -51,6 +65,12 @@ class ProductService
         return $product;
     }
 
+    /**
+     * Update Product
+     * @param array $data
+     * @param Product $product
+     * @return Product
+     */
     public function update(array $data, Product $product)
     {
         if (isset($data['image'])) {
@@ -79,12 +99,32 @@ class ProductService
     }
 
     /**
-     * product delete
-     * @param Product $product
+     * delete product
+     * @param string $id
      * @return void
      */
-    public function delete(Product $product)
+    public function delete(string $id)
     {
-        $product->delete();
+        try {
+            $this->findOne($id)->delete();
+        } catch (Exception $ex) {
+            throw $ex;
+        }
+    }
+
+    /**
+     * delete forceDelete product
+     * @param string $id
+     * @return void
+     */
+    public function forceDelete(string $id)
+    {
+        try {
+            $product = $this->findOne($id);
+            $product->categories()->sync([]);
+            $product->forceDelete();
+        } catch (Exception $ex) {
+            throw $ex;
+        }
     }
 }

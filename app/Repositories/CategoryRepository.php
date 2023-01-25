@@ -2,13 +2,13 @@
 
 namespace App\Repositories;
 
+use Exception;
 use App\Models\Category;
 use App\Interfaces\RepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
-use App\Interfaces\ParentCategoriesInterface;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-class CategoryRepository implements RepositoryInterface, ParentCategoriesInterface
+class CategoryRepository implements RepositoryInterface
 {
     public function __construct(
         private Category $category,
@@ -27,26 +27,21 @@ class CategoryRepository implements RepositoryInterface, ParentCategoriesInterfa
         ->with('parent')
         ->withCount('products')
         ->paginate(10);
-        // dd($categories);
+
         return $categories;
     }
 
     /**
-     * Get Parent Categories
-     *
-     * @return Collection
+     * findOne Category
+     * @param string $id
+     * @return Category
      */
-    public function parentCategories(): Collection
+    public function findOne(string $id): Category
     {
-        return $this->category->whereNull('parent_category_id')->get(['id', 'name']);
-    }
-
-    /**
-     * get all Categories
-     * @return Collection
-     */
-    public function allCategories(): Collection
-    {
-        return Category::select(['id', 'name'])->get();
+        try {
+            return $this->category->findOrFail($id);
+        } catch (Exception $ex) {
+            throw $ex;
+        }
     }
 }

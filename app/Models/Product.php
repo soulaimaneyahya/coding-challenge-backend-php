@@ -42,7 +42,6 @@ class Product extends Model
         return $this->belongsToMany(Category::class)->withTimestamps();
     }
 
-
     public static function boot()
     {
         parent::boot();

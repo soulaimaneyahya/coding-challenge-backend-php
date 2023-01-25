@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Contracts\View\View;
-use App\Http\Requests\CategoryRequest;
-use App\Services\CategoryService;
-use App\Models\Category;
 use Exception;
+use App\Models\Category;
+use App\Services\CategoryService;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use App\Http\Requests\CategoryRequest;
+use App\Repositories\CategoryCollectionRepository;
 
 class CategoryController extends Controller
 {
@@ -33,7 +35,7 @@ class CategoryController extends Controller
      */
     public function create(): View
     {
-        $parent_categories = $this->categoryService->parentCategories();
+        $parent_categories = CategoryCollectionRepository::parentCategories();
         return view('categories.create', compact('parent_categories'));
     }
 
@@ -41,7 +43,7 @@ class CategoryController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\CategoryRequest  $request
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
     public function store(CategoryRequest $request)
     {
@@ -50,7 +52,6 @@ class CategoryController extends Controller
             return redirect()->route('categories.edit', compact('category'))
             ->with('alert-success', 'Category Created !');
         } catch (Exception $ex) {
-            // dd($ex->getMessage());
             return redirect()->route('categories.index')->with('alert-danger', 'Something going wrong!');
         }
     }
@@ -59,9 +60,9 @@ class CategoryController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\Category  $category
-     * @return \Illuminate\Http\Response
+     * @return View
      */
-    public function show(Category $category)
+    public function show(Category $category): View
     {
         return view('categories.show', compact('category'));
     }
@@ -74,7 +75,7 @@ class CategoryController extends Controller
      */
     public function edit(Category $category): View
     {
-        $parent_categories = $this->categoryService->parentCategories();
+        $parent_categories = CategoryCollectionRepository::parentCategories();
         return view('categories.edit', compact('category', 'parent_categories'));
     }
 
@@ -83,7 +84,7 @@ class CategoryController extends Controller
      *
      * @param  \App\Http\Requests\CategoryRequest  $request
      * @param  \App\Models\Category  $category
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
     public function update(CategoryRequest $request, Category $category)
     {
@@ -91,7 +92,6 @@ class CategoryController extends Controller
             $category = $this->categoryService->update($request->validated(), $category);
             return redirect()->route('categories.edit', compact('category'))->with('alert-info', 'Category Updated !');
         } catch (Exception $ex) {
-            // dd($ex->getMessage());
             return redirect()->route('categories.index')->with('alert-danger', 'Something going wrong!');
         }
     }
@@ -99,15 +99,14 @@ class CategoryController extends Controller
     /**
      * category destroy
      * @param Category $category
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function destroy(Category $category)
     {
         try {
-            $this->categoryService->delete($category);
+            $this->categoryService->delete($category->id);
             return redirect()->route('categories.index')->with('alert-info', 'Category Deleted !');
         } catch (Exception $ex) {
-            // dd($ex->getMessage());
             return redirect()->route('categories.index')->with('alert-danger', 'Something going wrong!');
         }
     }

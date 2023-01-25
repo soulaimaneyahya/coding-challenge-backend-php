@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
+use Exception;
 use App\Models\Category;
 use App\Repositories\CategoryRepository;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class CategoryService
@@ -26,22 +26,17 @@ class CategoryService
     }
 
     /**
-     * Get Parent Categories
-     *
-     * @return Collection
+     * findOne Category
+     * @param string $id
+     * @return Category
      */
-    public function parentCategories()
+    public function findOne(string $id): Category
     {
-        return $this->categoryRepository->parentCategories();
-    }
-
-    /**
-     * get all Categories
-     * @return Collection
-     */
-    public function allCategories(): Collection
-    {
-        return $this->categoryRepository->allCategories();
+        try {
+            return $this->categoryRepository->findOne($id);
+        } catch (Exception $ex) {
+            throw $ex;
+        }
     }
 
     /**
@@ -82,12 +77,35 @@ class CategoryService
     }
 
     /**
-     * category delete
-     * @param Category $category
+     * delete category
+     * @param string $id
      * @return void
      */
-    public function delete(Category $category)
+    public function delete(string $id)
     {
-        $category->delete();
+        try {
+            $category = $this->findOne($id);
+            $category->subcategories()->delete();
+            $category->delete();
+        } catch (Exception $ex) {
+            throw $ex;
+        }
+    }
+
+    /**
+     * delete forceDelete category
+     * @param string $id
+     * @return void
+     */
+    public function forceDelete(string $id)
+    {
+        try {
+            $category = $this->findOne($id);
+            $category->products()->sync([]);
+            $category->subcategories()->forceDelete();
+            $category->forceDelete();
+        } catch (Exception $ex) {
+            throw $ex;
+        }
     }
 }

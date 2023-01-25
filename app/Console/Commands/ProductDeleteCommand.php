@@ -3,10 +3,17 @@
 namespace App\Console\Commands;
 
 use App\Models\Product;
+use App\Services\ProductService;
 use Illuminate\Console\Command;
 
 class ProductDeleteCommand extends Command
 {
+    public function __construct(
+        private ProductService $productService
+    ) {
+        parent::__construct();
+    }
+
     /**
      * The name and signature of the console command.
      *
@@ -29,9 +36,9 @@ class ProductDeleteCommand extends Command
     public function handle()
     {
         if ($this->option('force')) {
-            Product::find($this->option('id'))->forceDelete();
+            $this->productService->forceDelete($this->option('id'));
         } else {
-            Product::find($this->option('id'))->delete();
+            $this->productService->delete($this->option('id'));
         }
         
         $this->info("Product deleted");

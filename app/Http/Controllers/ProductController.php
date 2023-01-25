@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use Exception;
 use App\Models\Product;
 use App\Services\ProductService;
-use Illuminate\Contracts\View\View;
 use App\Services\CategoryService;
+use Illuminate\Contracts\View\View;
 use App\Http\Requests\ProductRequest;
+use App\Repositories\CategoryCollectionRepository;
+use Illuminate\Http\RedirectResponse;
 
 class ProductController extends Controller
 {
@@ -26,7 +28,7 @@ class ProductController extends Controller
     public function index(): View
     {
         $products = $this->productService->all();
-        $categories = $this->categoryService->allCategories();
+        $categories = CategoryCollectionRepository::allCategories();
         // dd($products);
         return view('products.index', compact('products', 'categories'));
     }
@@ -38,7 +40,7 @@ class ProductController extends Controller
      */
     public function create(): View
     {
-        $categories = $this->categoryService->allCategories();
+        $categories = CategoryCollectionRepository::allCategories();
         return view('products.create', compact('categories'));
     }
 
@@ -46,7 +48,7 @@ class ProductController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\ProductRequest  $request
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
     public function store(ProductRequest $request)
     {
@@ -54,7 +56,6 @@ class ProductController extends Controller
             $product = $this->productService->store($request->validated());
             return redirect()->route('products.edit', compact('product'))->with('alert-success', 'Product Created !');
         } catch (Exception $ex) {
-            // dd($ex->getMessage());
             return redirect()->route('products.index')->with('alert-danger', 'Something going wrong!');
         }
     }
@@ -63,9 +64,9 @@ class ProductController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
+     * @return View
      */
-    public function show(Product $product)
+    public function show(Product $product): View
     {
         return view('products.show', compact('product'));
     }
@@ -78,7 +79,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product): View
     {
-        $categories = $this->categoryService->allCategories();
+        $categories = CategoryCollectionRepository::allCategories();
         return view('products.edit', compact('product', 'categories'));
     }
 
@@ -87,7 +88,7 @@ class ProductController extends Controller
      *
      * @param  \App\Http\Requests\ProductRequest  $request
      * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
     public function update(ProductRequest $request, Product $product)
     {
@@ -95,7 +96,6 @@ class ProductController extends Controller
             $product = $this->productService->update($request->validated(), $product);
             return redirect()->route('products.edit', compact('product'))->with('alert-info', 'Product Updated !');
         } catch (Exception $ex) {
-            // dd($ex->getMessage());
             return redirect()->route('products.index')->with('alert-danger', 'Something going wrong!');
         }
     }
@@ -104,15 +104,14 @@ class ProductController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
+     * @return RedirectResponse
      */
     public function destroy(Product $product)
     {
         try {
-            $this->productService->delete($product);
+            $this->productService->delete($product->id);
             return redirect()->route('products.index')->with('alert-info', 'Product Deleted !');
         } catch (Exception $ex) {
-            // dd($ex->getMessage());
             return redirect()->route('products.index')->with('alert-danger', 'Something going wrong!');
         }
     }
