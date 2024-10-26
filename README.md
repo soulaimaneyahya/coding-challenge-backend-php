@@ -11,9 +11,8 @@ composer install
 1. Run the following command to create .env file and generate your app key:
 
 ```
-mv .env.example .env
+cp .env.example .env
 ```
-
 
 ```bash
 php artisan key:generate
