@@ -17,7 +17,8 @@ return new class extends Migration
             $table->uuid('id')->index()->primary();
             $table->string('name', 255);
             $table->string('description', 700);
-            $table->float('price', 8, 2);
+            // Decimal for price, allowing for precision
+            $table->decimal('price', 10, 4);
             $table->timestamps();
             $table->softDeletes();
         });

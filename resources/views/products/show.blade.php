@@ -7,7 +7,7 @@
         <div class="mx-3">
             <h3>{{ $product->name }}</h3>
             <p>{{ $product->description }}</p>
-            <h3 class="text-muted font-bold">{{ $product->price }}</h3>
+            <h3 class="text-muted font-bold">{{ $product->getPrice() }}</h3>
             <p class="text-muted">Added {{ $product->created_at->diffForHumans() }}</p>
             <div class="mb-3">
                 <p class="m-0 p-0">Categories:</p>

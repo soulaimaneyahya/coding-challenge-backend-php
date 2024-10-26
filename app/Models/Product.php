@@ -20,9 +20,22 @@ class Product extends Model
         'description',
         'price',
     ];
+
     public $sortable = [
         'name', 'price'
     ];
+
+    protected $casts = [
+        'price' => 'float',
+    ];
+
+    /**
+     * @return float
+     */
+    public function getPrice(): float
+    {
+        return (float) $this->price;
+    }
 
     /**
      * each prouct has one image using morphOne relationship
