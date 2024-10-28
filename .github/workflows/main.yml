@@ -41,14 +41,4 @@ jobs:
         run: php artisan test
       # PHP PSR 2
       - name: Test PHP Coding Styles
-        run: |
-          ./vendor/bin/phpcs app/Http/Controllers/ProductController.php --standard=PSR2
-          ./vendor/bin/phpcs app/Http/Controllers/CategoryController.php --standard=PSR2
-          ./vendor/bin/phpcs app/Services/CategoryService.php --standard=PSR2
-          ./vendor/bin/phpcs app/Services/ProductService.php --standard=PSR2
-          ./vendor/bin/phpcs app/Repositories/ProductRepository.php --standard=PSR2
-          ./vendor/bin/phpcs app/Repositories/CategoryRepository.php --standard=PSR2
-          ./vendor/bin/phpcs app/Repositories/CategoryCollectionRepository.php --standard=PSR2
-          ./vendor/bin/phpcs app/Interfaces/CategoryCollectionInterface.php --standard=PSR2
-          ./vendor/bin/phpcs app/Interfaces/RepositoryInterface.php --standard=PSR2
-          ./vendor/bin/phpcs tests/Feature/ProductTest.php --standard=PSR2
+        run: composer run-script php-cs

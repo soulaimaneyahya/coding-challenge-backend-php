@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Category;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,8 +14,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('categories', function (Blueprint $table) {
-            $table->foreignUuid('parent_category_id')->nullable()->constrained()->on('categories')->onDelete('cascade');
+        Schema::table(Category::TABLE, function (Blueprint $table) {
+            $table->foreignUuid(Category::PARENT_CATEGORY_ID_COLUMN)
+                ->nullable()
+                ->constrained()
+                ->on(Category::TABLE)
+                ->onDelete('cascade');
         });
     }
 
@@ -25,9 +30,9 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('categories', function (Blueprint $table) {
-            $table->dropForeign(['parent_category_id']);
-            $table->dropColumn('parent_category_id');
+        Schema::table(Category::TABLE, function (Blueprint $table) {
+            $table->dropForeign([Category::PARENT_CATEGORY_ID_COLUMN]);
+            $table->dropColumn(Category::PARENT_CATEGORY_ID_COLUMN);
         });
     }
 };

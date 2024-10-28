@@ -18,7 +18,7 @@ class CategoryFactory extends Factory
     public function definition()
     {
         return [
-            'name' => fake()->sentence($nbWords = 6),
+            Category::NAME_COLUMN => fake()->sentence($nbWords = 6),
         ];
     }
 }

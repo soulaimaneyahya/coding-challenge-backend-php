@@ -2,8 +2,9 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\User;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -18,11 +19,11 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            'remember_token' => Str::random(10),
+            User::NAME_COLUMN => fake()->name(),
+            User::EMAIL_COLUMN => fake()->unique()->safeEmail(),
+            User::EMAIL_VERIFIED_AT_COLUMN => now(),
+            User::PASSWORD_COLUMN => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            User::REMEMBER_TOKEN_COLUMN => Str::random(10),
         ];
     }
 
@@ -34,7 +35,7 @@ class UserFactory extends Factory
     public function unverified()
     {
         return $this->state(fn (array $attributes) => [
-            'email_verified_at' => null,
+            User::EMAIL_VERIFIED_AT_COLUMN => null,
         ]);
     }
 }

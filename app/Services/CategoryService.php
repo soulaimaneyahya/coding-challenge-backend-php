@@ -14,7 +14,7 @@ class CategoryService
         private Category $category,
     ) {
     }
-    
+
     /**
      * Get All Categories
      *
@@ -48,8 +48,8 @@ class CategoryService
     {
         $category = $this->category->create($data);
 
-        if (isset($data['parent_category_id'])) {
-            $category->parent()->associate($data['parent_category_id'])->save();
+        if (isset($data[Category::PARENT_CATEGORY_ID_COLUMN])) {
+            $category->parent()->associate($data[Category::PARENT_CATEGORY_ID_COLUMN])->save();
         }
 
         return $category;
@@ -63,11 +63,11 @@ class CategoryService
      */
     public function update(array $data, Category $category): Category
     {
-        if (isset($data['parent_category_id']) && !is_null($category->parent_category_id)) {
-            $category->parent_category_id = $data['parent_category_id'];
+        if (isset($data[Category::PARENT_CATEGORY_ID_COLUMN]) && !is_null($category[Category::PARENT_CATEGORY_ID_COLUMN])) {
+            $category[Category::PARENT_CATEGORY_ID_COLUMN] = $data[Category::PARENT_CATEGORY_ID_COLUMN];
             $category->save();
         } else {
-            $category->parent_category_id = null;
+            $category[Category::PARENT_CATEGORY_ID_COLUMN] = null;
             $category->save();
         }
 

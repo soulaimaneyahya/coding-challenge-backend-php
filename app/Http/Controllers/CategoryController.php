@@ -25,6 +25,7 @@ class CategoryController extends Controller
     public function index(): View
     {
         $categories = $this->categoryService->all();
+
         return view('categories.index', compact('categories'));
     }
 
@@ -36,6 +37,7 @@ class CategoryController extends Controller
     public function create(): View
     {
         $parent_categories = CategoryCollectionRepository::parentCategories();
+
         return view('categories.create', compact('parent_categories'));
     }
 
@@ -49,6 +51,7 @@ class CategoryController extends Controller
     {
         try {
             $category = $this->categoryService->store($request->validated());
+
             return redirect()->route('categories.edit', compact('category'))
             ->with('alert-success', 'Category Created !');
         } catch (Exception $ex) {
@@ -76,6 +79,7 @@ class CategoryController extends Controller
     public function edit(Category $category): View
     {
         $parent_categories = CategoryCollectionRepository::parentCategories();
+
         return view('categories.edit', compact('category', 'parent_categories'));
     }
 
@@ -90,6 +94,7 @@ class CategoryController extends Controller
     {
         try {
             $category = $this->categoryService->update($request->validated(), $category);
+
             return redirect()->route('categories.edit', compact('category'))->with('alert-info', 'Category Updated !');
         } catch (Exception $ex) {
             return redirect()->route('categories.index')->with('alert-danger', 'Something going wrong!');
@@ -105,6 +110,7 @@ class CategoryController extends Controller
     {
         try {
             $this->categoryService->delete($category->id);
+
             return redirect()->route('categories.index')->with('alert-info', 'Category Deleted !');
         } catch (Exception $ex) {
             return redirect()->route('categories.index')->with('alert-danger', 'Something going wrong!');

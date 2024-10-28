@@ -48,6 +48,9 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
+        ],
+        "php-cs": [
+            "./vendor/bin/phpcs app --standard=PSR2"
         ]
     },
     "extra": {

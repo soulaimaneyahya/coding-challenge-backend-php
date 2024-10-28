@@ -2,9 +2,10 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
+use App\Models\Product;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ProductTest extends TestCase
 {
@@ -23,9 +24,9 @@ class ProductTest extends TestCase
         $image = $this->uploadImage();
 
         $params = [
-            'name' => fake()->sentence($nbWords = 6),
-            'description' => fake()->paragraph($nbSentences = 5),
-            'price' => fake()->randomFloat($nbMaxDecimals = 2, $min = 0, $max = 100),
+            Product::NAME_COLUMN => fake()->sentence($nbWords = 6),
+            Product::DESCRIPTION_COLUMN => fake()->paragraph($nbSentences = 5),
+            Product::PRICE_COLUMN => fake()->randomFloat($nbMaxDecimals = 2, $min = 0, $max = 100),
             'image' => $image
         ];
 
@@ -39,9 +40,9 @@ class ProductTest extends TestCase
     public function testStoreFail()
     {
         $params = [
-            'name' => fake()->sentence($nbWords = 6),
-            'description' => fake()->paragraph($nbSentences = 5),
-            'price' => fake()->randomFloat($nbMaxDecimals = 2, $min = 0, $max = 100),
+            Product::NAME_COLUMN => fake()->sentence($nbWords = 6),
+            Product::DESCRIPTION_COLUMN => fake()->paragraph($nbSentences = 5),
+            Product::PRICE_COLUMN => fake()->randomFloat($nbMaxDecimals = 2, $min = 0, $max = 100),
         ];
 
         $this->post('/products', $params)
@@ -57,21 +58,21 @@ class ProductTest extends TestCase
     {
         $product = $this->createDummyProduct();
 
-        $this->assertDatabaseHas('products', [
-            'id' => $product->id
+        $this->assertDatabaseHas(Product::TABLE, [
+            'id' => $product[Product::ID_COLUMN]
         ]);
         $product->name = 'product-2';
 
-        $this->put("/products/{$product->id}", $product->toArray())
+        $this->put("/products/{$product[Product::ID_COLUMN]}", $product->toArray())
             ->assertStatus(302)
             ->assertSessionHas('alert-info');
 
         $this->assertEquals(session('alert-info'), 'Product Updated !');
-        $this->assertDatabaseMissing('products', [
-            'name' => 'product-1',
+        $this->assertDatabaseMissing(Product::TABLE, [
+            Product::NAME_COLUMN => 'product-1',
         ]);
-        $this->assertDatabaseHas('products', [
-            'name' => 'product-2',
+        $this->assertDatabaseHas(Product::TABLE, [
+            Product::NAME_COLUMN => 'product-2',
         ]);
     }
 
@@ -79,14 +80,14 @@ class ProductTest extends TestCase
     {
         $product = $this->createDummyProduct();
 
-        $this->delete("/products/{$product->id}")
+        $this->delete("/products/{$product[Product::ID_COLUMN]}")
         ->assertStatus(302)
         ->assertSessionHas('alert-info');
 
         $this->assertEquals(session('alert-info'), 'Product Deleted !');
 
-        $this->assertSoftDeleted('products', [
-            'id' => $product->id
+        $this->assertSoftDeleted(Product::TABLE, [
+            'id' => $product[Product::ID_COLUMN]
         ]);
     }
 
@@ -95,8 +96,8 @@ class ProductTest extends TestCase
         $product = $this->createDummyProduct();
         $this->testDelete();
         $product->restore();
-        $this->assertDatabaseHas('products', [
-            'id' => $product->id
+        $this->assertDatabaseHas(Product::TABLE, [
+            'id' => $product[Product::ID_COLUMN]
         ]);
     }
 

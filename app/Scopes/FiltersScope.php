@@ -10,7 +10,13 @@ class FiltersScope implements Scope
 {
     public function apply(Builder $builder, Model $model)
     {
-        return $builder->when(request()->filled('category'), fn (Builder $query) => $query->whereRelation('categories', 'category_id', request('category')))
-        ->when(request()->filled('sort_by'), fn (Builder $query) => in_array(request('sort_by'), $model->sortable) ? $query->orderBy(request('sort_by'), request('order') ?? 'desc') : $query);
+        return $builder->when(request()->filled('category'), static function (Builder $query) {
+            return $query->whereRelation('categories', 'category_id', request('category'));
+        })
+        ->when(request()->filled('sort_by'), static function (Builder $query) use ($model) {
+            return in_array(request('sort_by'), $model->sortable)
+                ? $query->orderBy(request('sort_by'), request('order') ?? 'desc')
+                : $query;
+        });
     }
 }

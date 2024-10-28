@@ -18,22 +18,23 @@ class ProductFactory extends Factory
     public function definition()
     {
         return [
-            'name' => fake()->sentence($nbWords = 6),
-            'description' => fake()->paragraph($nbSentences = 5),
-            'price' => fake()->randomFloat($nbMaxDecimals = 2, $min = 0, $max = 100),
+            Product::NAME_COLUMN => fake()->sentence(6),
+            Product::DESCRIPTION_COLUMN => fake()->paragraph(5),
+            Product::PRICE_COLUMN => fake()->randomFloat(2, 0, 100),
         ];
     }
 
     /**
-     * Create dummy product for testing
+     * Create dummy product for testing.
+     *
      * @return static
      */
     public function productFactory(): static
     {
         return $this->state(fn (array $attributes) => [
-            'name' => 'product-1',
-            'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos amet eum non.',
-            'price' => 19,
+            Product::NAME_COLUMN => 'product-1',
+            Product::DESCRIPTION_COLUMN => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos amet eum non.',
+            Product::PRICE_COLUMN => 19,
         ]);
     }
 }

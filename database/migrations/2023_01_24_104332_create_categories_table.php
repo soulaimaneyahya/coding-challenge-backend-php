@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Category;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,11 +14,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('categories', function (Blueprint $table) {
-            $table->uuid('id')->index()->primary();
-            $table->string('name', 255)->index();
-            $table->timestamps();
-            $table->softDeletes();
+        Schema::create(Category::TABLE, function (Blueprint $table) {
+            $table->uuid(Category::ID_COLUMN)->index()->primary();
+            $table->string(Category::NAME_COLUMN, 255)->index();
+            $table->timestamp(Category::CREATED_AT_COLUMN, 0)->nullable();
+            $table->timestamp(Category::UPDATED_AT_COLUMN, 0)->nullable();
+            $table->timestamp(Category::DELETED_AT_COLUMN, 0)->nullable();
         });
     }
 
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists(Category::TABLE);
     }
 };

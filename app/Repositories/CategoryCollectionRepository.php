@@ -14,7 +14,7 @@ class CategoryCollectionRepository implements CategoryCollectionInterface
      */
     public static function allCategories(): Collection
     {
-        return Category::select(['id', 'name'])->get();
+        return Category::select([Category::ID_COLUMN, Category::NAME_COLUMN])->get();
     }
 
     /**
@@ -24,6 +24,7 @@ class CategoryCollectionRepository implements CategoryCollectionInterface
      */
     public static function parentCategories(): Collection
     {
-        return Category::whereNull('parent_category_id')->get(['id', 'name']);
+        return Category::whereNull(Category::PARENT_CATEGORY_ID_COLUMN)
+            ->get([Category::ID_COLUMN, Category::NAME_COLUMN]);
     }
 }

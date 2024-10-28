@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\CategoryProduct;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,13 +14,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('category_product', function (Blueprint $table) {
+        Schema::create(CategoryProduct::TABLE, function (Blueprint $table) {
             $table->id();
-            $table->foreignUuid('category_id')->constrained();
-            $table->foreignUuid('product_id')->constrained();
-            $table->timestamps();
+            $table->foreignUuid(CategoryProduct::CATEGORY_ID_COLUMN)->constrained();
+            $table->foreignUuid(CategoryProduct::PRODUCT_ID_COLUMN)->constrained();
+            $table->timestamp(CategoryProduct::CREATED_AT_COLUMN, 0)->nullable();
+            $table->timestamp(CategoryProduct::UPDATED_AT_COLUMN, 0)->nullable();
+            $table->timestamp(CategoryProduct::DELETED_AT_COLUMN, 0)->nullable();
 
-            $table->unique(['category_id', 'product_id']);
+            $table->unique([CategoryProduct::CATEGORY_ID_COLUMN, CategoryProduct::PRODUCT_ID_COLUMN]);
         });
     }
 
@@ -30,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('category_product');
+        Schema::dropIfExists(CategoryProduct::TABLE);
     }
 };

@@ -17,7 +17,6 @@ class ProductController extends Controller
         private ProductService $productService,
         private CategoryService $categoryService,
     ) {
-        //
     }
 
     /**
@@ -29,7 +28,7 @@ class ProductController extends Controller
     {
         $products = $this->productService->all();
         $categories = CategoryCollectionRepository::allCategories();
-        // dd($products);
+
         return view('products.index', compact('products', 'categories'));
     }
 
@@ -41,6 +40,7 @@ class ProductController extends Controller
     public function create(): View
     {
         $categories = CategoryCollectionRepository::allCategories();
+
         return view('products.create', compact('categories'));
     }
 
@@ -54,6 +54,7 @@ class ProductController extends Controller
     {
         try {
             $product = $this->productService->store($request->validated());
+
             return redirect()->route('products.edit', compact('product'))->with('alert-success', 'Product Created !');
         } catch (Exception $ex) {
             return redirect()->route('products.index')->with('alert-danger', 'Something going wrong!');
@@ -94,6 +95,7 @@ class ProductController extends Controller
     {
         try {
             $product = $this->productService->update($request->validated(), $product);
+
             return redirect()->route('products.edit', compact('product'))->with('alert-info', 'Product Updated !');
         } catch (Exception $ex) {
             return redirect()->route('products.index')->with('alert-danger', 'Something going wrong!');
@@ -110,6 +112,7 @@ class ProductController extends Controller
     {
         try {
             $this->productService->delete($product->id);
+
             return redirect()->route('products.index')->with('alert-info', 'Product Deleted !');
         } catch (Exception $ex) {
             return redirect()->route('products.index')->with('alert-danger', 'Something going wrong!');

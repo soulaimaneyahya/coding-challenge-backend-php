@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use App\Models\User;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -13,15 +14,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->uuid('id')->index()->primary();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
-            $table->timestamps();
-            $table->softDeletes();
+        Schema::create(User::TABLE, function (Blueprint $table) {
+            $table->uuid(User::ID_COLUMN)->index()->primary();
+            $table->string(User::NAME_COLUMN);
+            $table->string(User::EMAIL_COLUMN)->unique();
+            $table->timestamp(User::EMAIL_VERIFIED_AT_COLUMN)->nullable();
+            $table->string(User::PASSWORD_COLUMN);
+            $table->string(User::REMEMBER_TOKEN_COLUMN, 100)->nullable();
+            $table->timestamp(User::CREATED_AT_COLUMN, 0)->nullable();
+            $table->timestamp(User::UPDATED_AT_COLUMN, 0)->nullable();
+            $table->timestamp(User::DELETED_AT_COLUMN, 0)->nullable();
         });
     }
 
@@ -32,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists(User::TABLE);
     }
 };

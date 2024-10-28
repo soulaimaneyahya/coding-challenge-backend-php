@@ -3,9 +3,9 @@
 namespace App\Repositories;
 
 use Exception;
+use App\Models\Product;
 use App\Models\Category;
 use App\Interfaces\RepositoryInterface;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class CategoryRepository implements RepositoryInterface
@@ -25,7 +25,7 @@ class CategoryRepository implements RepositoryInterface
         $categories = $this->category
         ->latest()
         ->with('parent')
-        ->withCount('products')
+        ->withCount(Product::TABLE)
         ->paginate(10);
 
         return $categories;

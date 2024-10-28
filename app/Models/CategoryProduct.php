@@ -4,29 +4,28 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Image extends Model
+class CategoryProduct extends Model
 {
     use HasFactory, HasUuids, SoftDeletes;
 
-    public const TABLE = 'images';
+    public const TABLE = 'category_product';
+
     public const ID_COLUMN = 'id';
-    public const PATH_COLUMN = 'path';
-    public const RELATION_MORPH = 'imageable';
+    public const CATEGORY_ID_COLUMN = 'category_id';
+    public const PRODUCT_ID_COLUMN = 'product_id';
 
     public const CREATED_AT_COLUMN = 'created_at';
     public const UPDATED_AT_COLUMN = 'updated_at';
     public const DELETED_AT_COLUMN = 'deleted_at';
 
-    protected $fillable = ['path'];
 
     /**
-     * Get the image's ID.
+     * Get the category's ID.
      *
      * @return string
      */
@@ -36,26 +35,7 @@ class Image extends Model
     }
 
     /**
-     * Get the image's path.
-     *
-     * @return string
-     */
-    public function getPath(): string
-    {
-        return $this->getAttribute(self::PATH_COLUMN);
-    }
-
-    /**
-     * imageable morphTo relationship
-     * @return MorphTo
-     */
-    public function imageable(): MorphTo
-    {
-        return $this->morphTo();
-    }
-
-    /**
-     * Get the image's created at timestamp.
+     * Get the category's created at timestamp.
      *
      * @return Carbon
      */
@@ -65,7 +45,7 @@ class Image extends Model
     }
 
     /**
-     * Get the image's updated at timestamp.
+     * Get the category's updated at timestamp.
      *
      * @return Carbon
      */
@@ -75,7 +55,7 @@ class Image extends Model
     }
 
     /**
-     * Get the image's deleted at timestamp.
+     * Get the category's deleted at timestamp.
      *
      * @return Carbon|null
      */
@@ -85,11 +65,22 @@ class Image extends Model
     }
 
     /**
-     * Get Product Url
-     * @return string
+     * category belongsTo relationship
+     *
+     * @return BelongsTo
      */
-    public function url(): string
+    public function category(): BelongsTo
     {
-        return Storage::url($this->path);
+        return $this->belongsTo(Category::class);
+    }
+
+    /**
+     * Product belongsTo relationship
+     *
+     * @return BelongsTo
+     */
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Product::class);
     }
 }
