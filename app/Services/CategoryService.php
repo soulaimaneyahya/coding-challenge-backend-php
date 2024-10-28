@@ -63,7 +63,9 @@ class CategoryService
      */
     public function update(array $data, Category $category): Category
     {
-        if (isset($data[Category::PARENT_CATEGORY_ID_COLUMN]) && !is_null($category[Category::PARENT_CATEGORY_ID_COLUMN])) {
+        if (isset($data[Category::PARENT_CATEGORY_ID_COLUMN]) &&
+            !is_null($category[Category::PARENT_CATEGORY_ID_COLUMN])
+        ) {
             $category[Category::PARENT_CATEGORY_ID_COLUMN] = $data[Category::PARENT_CATEGORY_ID_COLUMN];
             $category->save();
         } else {
